@@ -5,12 +5,15 @@ public class Month {
     private int month;
     private int numberOfDays;
     
+    private int startDayOfTheWeek;
+    
     private Day[] days;
     
-    public Month(String name, int month, int numberOfDays) {  
+    public Month(String name, int month, int numberOfDays, int startDayOfTheWeek) {  
         this.name = name;
         this.month = month;
         this.numberOfDays = numberOfDays;
+        this.startDayOfTheWeek = startDayOfTheWeek;
         
         days = new Day[this.numberOfDays];
         
@@ -25,5 +28,13 @@ public class Month {
     
     public String getName() {
         return name;
+    }
+    
+    public int getNumberOfDays() {
+        return numberOfDays;
+    }
+    
+    public int getStartDayOfTheWeek() {
+        return startDayOfTheWeek;
     }
 }
