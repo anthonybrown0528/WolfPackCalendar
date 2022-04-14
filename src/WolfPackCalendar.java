@@ -1,5 +1,11 @@
+/**
+ * Displays a full year of months and shows events tied to specific days within those months
+ * @author Anthony Brown
+ * @author JR Boos
+ */
 public class WolfPackCalendar {
     
+    /** String array containing the names of every month of the year */
     public static final String[] monthNames = {"January",
                                            "February",
                                            "March",
@@ -11,7 +17,8 @@ public class WolfPackCalendar {
                                            "September",
                                            "November",
                                            "December"};
-                                           
+            
+    /** String array containing the names of the days of the week */                                    
     public static final String[] daysOfTheWeek = {"Sun",
                                                   "Mon",
                                                   "Tues",
@@ -19,7 +26,8 @@ public class WolfPackCalendar {
                                                   "Thurs",
                                                   "Fri",
                                                   "Sat"};
-                                           
+    
+    /** Int array containing the number of days in each month */                                            
     public static final int[] daysInMonth = {31,
                                              28,
                                              31,
@@ -32,10 +40,13 @@ public class WolfPackCalendar {
                                              31,
                                              30,
                                              31};
-                               
+    /** Array containing the months for a given year */      
     private Month[] months;
+
+    /** Numeric value of the year, given on the command line */
     private int year;
     
+    /** Maximum number of weeks in a month */
     public static final int MAX_WEEKS_IN_MONTH = 5;
     
     /** Number of days in a week */
@@ -52,7 +63,11 @@ public class WolfPackCalendar {
     
     /** Number of years in a single century */
     static final int YEARS_IN_CENTURY = 100;
-                               
+    
+    /**
+     * Constructs a new calendar given a numeric value for a year
+     * @param year numeric value of the year, given on the command line
+     */
     public WolfPackCalendar(int year) {
         this.year = year;
         
@@ -62,6 +77,10 @@ public class WolfPackCalendar {
         }
     }
     
+    /**
+     * Prints a full month in a text format, including days of the week
+     * @param index numeric value of month to print
+     */
     public void printMonth(int index) {
         
         // Display month
@@ -90,6 +109,7 @@ public class WolfPackCalendar {
         }
     }
     
+    /** Prints the entire year by repeating the printMonth method */
     public void printYear() {
         for(int i = 0; i < months.length; i++) {
             printMonth(i);
@@ -97,6 +117,13 @@ public class WolfPackCalendar {
         }
     }
     
+    /**
+     * Calculates the correct day of the week to start the month on
+     * @param month numeric value of the month
+     * @param day numeric value of the day
+     * @param year numeric value of the year
+     * @return day of the week the month starts on
+     */
     public static int zellersAlgorithm(int month, int day, int year) {
         int w = year - (MONTHS_IN_YEAR + 2 - month) / MONTHS_IN_YEAR;
         int x = w + w / LEAP_YEAR_FREQUENCY - w / YEARS_IN_CENTURY + 
@@ -108,6 +135,12 @@ public class WolfPackCalendar {
         return dayOfWeek;
     }
     
+    /**
+     * Takes the year as the first 
+     * argument on the command line 
+     * and prints the full year
+     * @param args Command line arguments, used to determine calendar year
+     */
     public static void main(String[] args) {
         WolfPackCalendar calendar = new WolfPackCalendar(2022);
         calendar.printYear();
