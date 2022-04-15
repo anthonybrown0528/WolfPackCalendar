@@ -10,7 +10,7 @@ public class Day {
     
     public Day(int month, int day) {
         if(month > MAX_MONTHS) {
-            throw new IllegalArgumentException("Invalid month");
+            throw new IllegalArgumentException("Invalid month: " + month);
         }
         
         if(day > MAX_DAYS) {
