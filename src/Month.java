@@ -45,8 +45,16 @@ public class Month {
      * @param dayIndex determines which day to add a note to
      * @param note the note to be added
      */
-    public void addNote(int dayIndex, String note) {
-        days[dayIndex].addNote(note);
+    public void addNote(int day, String note) {
+        days[day - 1].addNote(note);
+    }
+    
+    public void printNotes() {
+        for(int i = 0; i < numberOfDays; i++) {
+            if(days[i].getNotes() != null) {
+                System.out.println(String.format("%s %d: %s", name, i + 1, days[i].getNotes()));
+            }
+        }
     }
     
     /**

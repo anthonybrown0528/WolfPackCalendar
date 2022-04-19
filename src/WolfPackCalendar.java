@@ -1,3 +1,8 @@
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+import java.util.Scanner;
+
 /**
  * Displays a full year of months and shows events tied to specific days within those months
  * @author Anthony Brown
@@ -6,7 +11,7 @@
 public class WolfPackCalendar {
     
     /** String array containing the names of every month of the year */
-    public static final String[] monthNames = {"January",
+    public static final String[] MONTH_NAMES = {"January",
                                            "February",
                                            "March",
                                            "April",
@@ -15,11 +20,13 @@ public class WolfPackCalendar {
                                            "July",
                                            "August",
                                            "September",
+                                           "October",
                                            "November",
                                            "December"};
+    
             
     /** String array containing the names of the days of the week */                                    
-    public static final String[] daysOfTheWeek = {"Sun",
+    public static final String[] DAYS_OF_THE_WEEK = {"Sun",
                                                   "Mon",
                                                   "Tues",
                                                   "Wed",
@@ -28,7 +35,7 @@ public class WolfPackCalendar {
                                                   "Sat"};
     
     /** Int array containing the number of days in each month */                                            
-    public static final int[] daysInMonth = {31,
+    public static final int[] DAYS_IN_MONTH = {31,
                                              28,
                                              31,
                                              30,
@@ -40,15 +47,13 @@ public class WolfPackCalendar {
                                              31,
                                              30,
                                              31};
+                                             
     /** Array containing the months for a given year */      
     private Month[] months;
 
     /** Numeric value of the year, given on the command line */
-    private int year;
-    
-    /** Maximum number of weeks in a month */
-    public static final int MAX_WEEKS_IN_MONTH = 5;
-    
+    private int year; 
+                                                  
     /** Number of days in a week */
     static final int DAYS_IN_WEEK = 7;
     
@@ -63,7 +68,7 @@ public class WolfPackCalendar {
     
     /** Number of years in a single century */
     static final int YEARS_IN_CENTURY = 100;
-    
+
     /**
      * Constructs a new calendar given a numeric value for a year
      * @param year numeric value of the year, given on the command line
@@ -71,10 +76,20 @@ public class WolfPackCalendar {
     public WolfPackCalendar(int year) {
         this.year = year;
         
-        months = new Month[monthNames.length];
+        months = new Month[MONTH_NAMES.length];
         for(int i = 0; i < months.length; i++) {
-            months[i] = new Month(monthNames[i], i, daysInMonth[i], zellersAlgorithm(i + 1, 1, this.year));
-        }
+            if(i == 1) {
+                months[i] = new Month(MONTH_NAMES[i], i, DAYS_IN_MONTH[i] + 1, zellersAlgorithm(i + 1, 1, this.year));
+                continue;
+            }
+            
+            months[i] = new Month(MONTH_NAMES[i], i, DAYS_IN_MONTH[i], zellersAlgorithm(i + 1, 1, this.year));
+        }        
+    }
+    
+    public WolfPackCalendar(int year, String notesFile) {
+        this(year);
+        processFile(notesFile);
     }
     
     /**
@@ -87,8 +102,8 @@ public class WolfPackCalendar {
         System.out.println("\t\t\t" + months[index].getName() + " " + year);
         
         // Display days of the week
-        for(int i = 0; i < daysOfTheWeek.length; i++) {
-            System.out.print(daysOfTheWeek[i] + "\t");
+        for(int i = 0; i < DAYS_OF_THE_WEEK.length; i++) {
+            System.out.print(DAYS_OF_THE_WEEK[i] + "\t");
         }
         System.out.println();
         
@@ -107,6 +122,9 @@ public class WolfPackCalendar {
                 System.out.println();
             }
         }
+        System.out.println();
+        
+        months[index].printNotes();
     }
     
     /** Prints the entire year by repeating the printMonth method */
@@ -135,6 +153,31 @@ public class WolfPackCalendar {
         return dayOfWeek;
     }
     
+    public void processLine(String line) {
+        Scanner lineScanner = new Scanner(line);
+        lineScanner.useDelimiter(",");
+            
+        int month = lineScanner.nextInt();
+        int day = lineScanner.nextInt();
+        
+        String note = lineScanner.next();
+        
+        months[month - 1].addNote(day, note);
+    }
+    
+    public void processFile(String filePath) {
+        Scanner fileScanner = null;
+        try {
+            fileScanner = new Scanner(new FileInputStream(filePath));
+        } catch (FileNotFoundException e) {
+            throw new IllegalArgumentException("Could not access: " + filePath);
+        }
+        
+        while(fileScanner.hasNextLine()) {
+            processLine(fileScanner.nextLine());
+        }
+    }
+    
     /**
      * Takes the year as the first 
      * argument on the command line 
@@ -142,7 +185,15 @@ public class WolfPackCalendar {
      * @param args Command line arguments, used to determine calendar year
      */
     public static void main(String[] args) {
-        WolfPackCalendar calendar = new WolfPackCalendar(2022);
+        WolfPackCalendar calendar = null;
+        if(args.length == 1) {
+            calendar = new WolfPackCalendar(Integer.parseInt(args[0]));
+        } else if(args.length > 1) {
+            calendar = new WolfPackCalendar(Integer.parseInt(args[0]), args[1]);
+        } else {
+            System.exit(1);
+        }
+        
         calendar.printYear();
     }
 }

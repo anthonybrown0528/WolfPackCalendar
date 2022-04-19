@@ -22,6 +22,9 @@ public class Day {
     /** Array containing the notes for each day */
     private String[] notes;
     
+    /** Stores number of notes in a single day */
+    private int numberOfNotes;
+    
     /**
      * Constructs a new day given numeric values for month and date
      * @param month the numeric value of the month the day belongs to
@@ -29,7 +32,7 @@ public class Day {
      */
     public Day(int month, int day) {
         if(month > MAX_MONTHS) {
-            throw new IllegalArgumentException("Invalid month");
+            throw new IllegalArgumentException("Invalid month: " + month);
         }
         
         if(day > MAX_DAYS) {
@@ -60,8 +63,18 @@ public class Day {
      * Gets all notes attached to a day
      * @return notes attached to a day
      */
-    public String[] getNotes() {
-        return notes;
+    public String getNotes() {
+        if(numberOfNotes < 2) {
+            return getNote(0);
+        }
+        
+        String notesList = "\n";
+        for(int i = 0; i < numberOfNotes; i++) {
+            notesList += String.format(" - %s\n", getNote(i));
+        }
+        
+        notesList = notesList.substring(0, notesList.length() - 1);
+        return notesList;
     }
     
     /**
@@ -70,7 +83,11 @@ public class Day {
      * @return the specified note
      */
     public String getNote(int index) {
-        return notes[index];
+        try {
+            return notes[index];
+        } catch(NullPointerException e) {
+            return null;
+        }
     }
     
     /**
@@ -78,12 +95,14 @@ public class Day {
      * @param noteString the note to be added to the day as a string
      */
     public void addNote(String noteString) {
-        String[] tmp = new String[notes.length + 1];
-        for(int i = 0; i < notes.length; i++) {
-            tmp[i] = notes[i];
+        String[] tmp = new String[numberOfNotes + 1];
+        for(int i = 0; i < numberOfNotes; i++) {
+            tmp[i] = getNote(i);
         }
         
         tmp[tmp.length - 1] = noteString;
         notes = tmp;
+        
+        numberOfNotes++;
     }
 }
