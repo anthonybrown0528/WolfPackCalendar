@@ -8,6 +8,8 @@ public class Day {
     
     private String[] notes;
     
+    private int numberOfNotes;
+    
     public Day(int month, int day) {
         if(month > MAX_MONTHS) {
             throw new IllegalArgumentException("Invalid month: " + month);
@@ -29,21 +31,37 @@ public class Day {
         return day;
     }
     
-    public String[] getNotes() {
-        return notes;
+    public String getNotes() {
+        if(numberOfNotes < 2) {
+            return getNote(0);
+        }
+        
+        String notesList = "\n";
+        for(int i = 0; i < numberOfNotes; i++) {
+            notesList += String.format(" - %s\n", getNote(i));
+        }
+        
+        notesList = notesList.substring(0, notesList.length() - 1);
+        return notesList;
     }
     
     public String getNote(int index) {
-        return notes[index];
+        try {
+            return notes[index];
+        } catch(NullPointerException e) {
+            return null;
+        }
     }
     
     public void addNote(String noteString) {
-        String[] tmp = new String[notes.length + 1];
-        for(int i = 0; i < notes.length; i++) {
-            tmp[i] = notes[i];
+        String[] tmp = new String[numberOfNotes + 1];
+        for(int i = 0; i < numberOfNotes; i++) {
+            tmp[i] = getNote(i);
         }
         
         tmp[tmp.length - 1] = noteString;
         notes = tmp;
+        
+        numberOfNotes++;
     }
 }

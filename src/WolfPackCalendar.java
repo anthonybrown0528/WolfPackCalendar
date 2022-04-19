@@ -1,3 +1,8 @@
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+import java.util.Scanner;
+
 public class WolfPackCalendar {
     
     public static final String[] MONTH_NAMES = {"January",
@@ -57,8 +62,19 @@ public class WolfPackCalendar {
         
         months = new Month[MONTH_NAMES.length];
         for(int i = 0; i < months.length; i++) {
+            if(i == 1) {
+                months[i] = new Month(MONTH_NAMES[i], i, DAYS_IN_MONTH[i] + 1, zellersAlgorithm(i + 1, 1, this.year));
+                continue;
+            }
+            
             months[i] = new Month(MONTH_NAMES[i], i, DAYS_IN_MONTH[i], zellersAlgorithm(i + 1, 1, this.year));
-        }
+        }        
+    }
+    
+    public WolfPackCalendar(int year, String notesFile) {
+        this(year);
+
+         processFile(notesFile);
     }
     
     public void printMonth(int index) {
@@ -87,6 +103,9 @@ public class WolfPackCalendar {
                 System.out.println();
             }
         }
+        System.out.println();
+        
+        months[index].printNotes();
     }
     
     public void printYear() {
@@ -107,8 +126,41 @@ public class WolfPackCalendar {
         return dayOfWeek;
     }
     
+    public void processLine(String line) {
+        Scanner lineScanner = new Scanner(line);
+        lineScanner.useDelimiter(",");
+            
+        int month = lineScanner.nextInt();
+        int day = lineScanner.nextInt();
+        
+        String note = lineScanner.next();
+        
+        months[month - 1].addNote(day, note);
+    }
+    
+    public void processFile(String filePath) {
+        Scanner fileScanner = null;
+        try {
+            fileScanner = new Scanner(new FileInputStream(filePath));
+        } catch (FileNotFoundException e) {
+            throw new IllegalArgumentException("Could not access: " + filePath);
+        }
+        
+        while(fileScanner.hasNextLine()) {
+            processLine(fileScanner.nextLine());
+        }
+    }
+    
     public static void main(String[] args) {
-        WolfPackCalendar calendar = new WolfPackCalendar(2022);
+        WolfPackCalendar calendar = null;
+        if(args.length == 1) {
+            calendar = new WolfPackCalendar(Integer.parseInt(args[0]));
+        } else if(args.length == 2) {
+            calendar = new WolfPackCalendar(Integer.parseInt(args[0]), args[1]);
+        } else {
+            System.exit(1);
+        }
+        
         calendar.printYear();
     }
 }

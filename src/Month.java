@@ -1,6 +1,5 @@
 public class Month {
     
-
     private String name;
     private int month;
     private int numberOfDays;
@@ -22,8 +21,16 @@ public class Month {
         }
     }
     
-    public void addNote(int dayIndex, String note) {
-        days[dayIndex].addNote(note);
+    public void addNote(int day, String note) {
+        days[day - 1].addNote(note);
+    }
+    
+    public void printNotes() {
+        for(int i = 0; i < numberOfDays; i++) {
+            if(days[i].getNotes() != null) {
+                System.out.println(String.format("%s %d: %s", name, i + 1, days[i].getNotes()));
+            }
+        }
     }
     
     public String getName() {
