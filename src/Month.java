@@ -2,6 +2,8 @@
  * Contains all day information for a given month, 
  * including notes and starting day of the week
  * @author Anthony Brown
+ * @author JR Boos
+ * @author Seth Spicer
  */
 public class Month {
     

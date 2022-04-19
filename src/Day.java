@@ -1,8 +1,11 @@
 /**
  * Contains the events and notes inputted from a CSV file
  * @author Anthony Brown
+ * @author JR Boos
+ * @author Seth Spicer
  */
 public class Day {
+    
     /** Max number of months in a year */
     public static final int MAX_MONTHS = 12;
 

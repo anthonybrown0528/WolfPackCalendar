@@ -7,8 +7,24 @@ import java.util.Scanner;
  * Displays a full year of months and shows events tied to specific days within those months
  * @author Anthony Brown
  * @author JR Boos
+ * @author Seth Spicer
  */
 public class WolfPackCalendar {
+    
+    /** Number of days in a week */
+    public static final int DAYS_IN_WEEK = 7;
+    
+    /** Largest possible number of days in a single month */
+    public static final int MAX_DAYS_IN_MONTH = 31;
+    
+    /** Frequency of leap years in terms of number of years */
+    public static final int LEAP_YEAR_FREQUENCY = 4;
+    
+    /** Number of months in a single year */
+    public static final int MONTHS_IN_YEAR = 12;
+    
+    /** Number of years in a single century */
+    public static final int YEARS_IN_CENTURY = 100;
     
     /** String array containing the names of every month of the year */
     public static final String[] MONTH_NAMES = {"January",
@@ -53,32 +69,21 @@ public class WolfPackCalendar {
 
     /** Numeric value of the year, given on the command line */
     private int year; 
-                                                  
-    /** Number of days in a week */
-    static final int DAYS_IN_WEEK = 7;
-    
-    /** Largest possible number of days in a single month */
-    static final int MAX_DAYS_IN_MONTH = 31;
-    
-    /** Frequency of leap years in terms of number of years */
-    static final int LEAP_YEAR_FREQUENCY = 4;
-    
-    /** Number of months in a single year */
-    static final int MONTHS_IN_YEAR = 12;
-    
-    /** Number of years in a single century */
-    static final int YEARS_IN_CENTURY = 100;
 
     /**
      * Constructs a new calendar given a numeric value for a year
      * @param year numeric value of the year, given on the command line
      */
     public WolfPackCalendar(int year) {
+        if(year < 0) {
+            throw new IllegalArgumentException("Invalid year");
+        }
+        
         this.year = year;
         
         months = new Month[MONTH_NAMES.length];
         for(int i = 0; i < months.length; i++) {
-            if(i == 1) {
+            if(i == 1 && year % LEAP_YEAR_FREQUENCY == 0) {
                 months[i] = new Month(MONTH_NAMES[i], i, DAYS_IN_MONTH[i] + 1, zellersAlgorithm(i + 1, 1, this.year));
                 continue;
             }
@@ -186,14 +191,25 @@ public class WolfPackCalendar {
      */
     public static void main(String[] args) {
         WolfPackCalendar calendar = null;
-        if(args.length == 1) {
-            calendar = new WolfPackCalendar(Integer.parseInt(args[0]));
-        } else if(args.length > 1) {
-            calendar = new WolfPackCalendar(Integer.parseInt(args[0]), args[1]);
-        } else {
+        
+        try {
+            if(args.length == 1) {
+                calendar = new WolfPackCalendar(Integer.parseInt(args[0]));
+            } else if(args.length > 1) {
+                calendar = new WolfPackCalendar(Integer.parseInt(args[0]), args[1]);
+            } else {
+                System.exit(1);
+            }
+        } catch(IllegalArgumentException e) {
+            System.out.println(e.getMessage());
             System.exit(1);
         }
         
-        calendar.printYear();
+        try {
+            calendar.printYear();
+        } catch(NullPointerException e) {
+            System.out.println(e.getMessage());
+            System.exit(1);
+        }
     }
 }
