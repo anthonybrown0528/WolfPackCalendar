@@ -175,7 +175,7 @@ public class WolfPackCalendar {
         try {
             fileScanner = new Scanner(new FileInputStream(filePath));
         } catch (FileNotFoundException e) {
-            throw new IllegalArgumentException("Could not access: " + filePath);
+            throw new IllegalArgumentException("Unable to access input file: " + filePath);
         }
         
         while(fileScanner.hasNextLine()) {
@@ -191,6 +191,14 @@ public class WolfPackCalendar {
      */
     public static void main(String[] args) {
         WolfPackCalendar calendar = null;
+        int year;
+        
+        try {
+            year = Integer.parseInt(args[0]);
+        } catch(IllegalArgumentException e) {
+            System.out.println("Invalid year");
+            System.exit(1);
+        }
         
         try {
             if(args.length == 1) {
@@ -198,6 +206,7 @@ public class WolfPackCalendar {
             } else if(args.length > 1) {
                 calendar = new WolfPackCalendar(Integer.parseInt(args[0]), args[1]);
             } else {
+                System.out.println("Usage: java WolfPackCalendar year infile");
                 System.exit(1);
             }
         } catch(IllegalArgumentException e) {
