@@ -11,7 +11,7 @@ public class Day {
     
     /** Int array containing the number of days in each month */                                            
     public static final int[] DAYS_IN_MONTH = {31,
-                                             28,
+                                             29,
                                              31,
                                              30,
                                              31,
@@ -49,7 +49,7 @@ public class Day {
             throw new IllegalArgumentException("Invalid month: " + month);
         }
         
-        if(day > DAYS_IN_MONTH[month] && month != 1) {
+        if(day > DAYS_IN_MONTH[month]) {
             throw new IllegalArgumentException("Invalid day: " + day);
         }
         
