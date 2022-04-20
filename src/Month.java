@@ -7,11 +7,38 @@
  */
 public class Month {
     
+    /** enums representing each month of the year */
+    public static enum Months {JANUARY,
+                                FEBRUARY,
+                                MARCH,
+                                APRIL,
+                                MAY,
+                                JUNE,
+                                JULY,
+                                AUGUST,
+                                SEPTEMBER,
+                                OCTOBER,
+                                NOVEMBER,
+                                DECEMBER};
+                                
+    public static final Months[] ALL_MONTHS = {Months.JANUARY,
+                                      Months.FEBRUARY,
+                                      Months.MARCH,
+                                      Months.APRIL,
+                                      Months.MAY,
+                                      Months.JUNE,
+                                      Months.JULY,
+                                      Months.AUGUST,
+                                      Months.SEPTEMBER,
+                                      Months.OCTOBER,
+                                      Months.NOVEMBER,
+                                      Months.DECEMBER};
+    
     /** Name of the current month */
     private String name;
 
-    /** Numeric value of the current month */
-    private int month;
+    /** enum value of the current month */
+    private Months month;
 
     /** Number of days in the current month */
     private int numberOfDays;
@@ -29,7 +56,7 @@ public class Month {
      * @param numberOfDays number of days in the month
      * @param startDayOfTheWeek day of the week the month starts on
      */
-    public Month(String name, int month, int numberOfDays, int startDayOfTheWeek) {  
+    public Month(String name, Months month, int numberOfDays, int startDayOfTheWeek) {  
         this.name = name;
         this.month = month;
         this.numberOfDays = numberOfDays;
@@ -38,7 +65,7 @@ public class Month {
         days = new Day[this.numberOfDays];
         
         for(int i = 1; i <= numberOfDays; i++) {
-            days[i - 1] = new Day(month, i);
+            days[i - 1] = new Day(month.ordinal(), i);
         }
     }
     

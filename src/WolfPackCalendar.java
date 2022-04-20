@@ -67,15 +67,10 @@ public class WolfPackCalendar {
         
         this.year = year;
         
-        months = new Month[MONTH_NAMES.length];
-        for(int i = 0; i < months.length; i++) {
-            if(i == 1 && year % LEAP_YEAR_FREQUENCY == 0) {
-                months[i] = new Month(MONTH_NAMES[i], i, Day.DAYS_IN_MONTH[i] + 1, zellersAlgorithm(i + 1, 1, this.year));
-                continue;
-            }
-            
-            months[i] = new Month(MONTH_NAMES[i], i, Day.DAYS_IN_MONTH[i], zellersAlgorithm(i + 1, 1, this.year));
-        }        
+        months = new Month[MONTHS_IN_YEAR];
+        for(Month.Months month : Month.ALL_MONTHS) {
+            months[month.ordinal()] = new Month(MONTH_NAMES[month.ordinal()], month, Day.DAYS_IN_MONTH[month.ordinal()], zellersAlgorithm(month.ordinal() + 1, 1, year));
+        }
     }
     
     public WolfPackCalendar(int year, String notesFile) {

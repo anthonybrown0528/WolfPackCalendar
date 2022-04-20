@@ -5,13 +5,10 @@
  * @author Seth Spicer
  */
 public class Day {
-    
-    /** Max number of months in a year */
-    public static final int MAX_MONTHS = 12;
-    
+     
     /** Int array containing the number of days in each month */                                            
     public static final int[] DAYS_IN_MONTH = {31,
-                                             28,
+                                             29,
                                              31,
                                              30,
                                              31,
@@ -22,11 +19,6 @@ public class Day {
                                              31,
                                              30,
                                              31};
-    
-    /** Instance variable representing 
-     * the numeric value of 
-     * the month the day belongs to */
-    private int month;
     
     /** Instance variable representing 
      * the numeric value of 
@@ -45,24 +37,11 @@ public class Day {
      * @param day the numeric value of the day within the month
      */
     public Day(int month, int day) {
-        if(month >= MAX_MONTHS) {
-            throw new IllegalArgumentException("Invalid month: " + month);
-        }
-        
         if(day > DAYS_IN_MONTH[month] && month != 1) {
             throw new IllegalArgumentException("Invalid day: " + day);
         }
         
-        this.month = month;
         this.day = day;
-    }
-    
-    /**
-     * Gets the numeric value of the month the day belongs to
-     * @return numeric value of the month
-     */
-    public int getMonth() {
-        return month;
     }
     
     /**
