@@ -49,20 +49,6 @@ public class WolfPackCalendar {
                                                   "Thurs",
                                                   "Fri",
                                                   "Sat"};
-    
-    /** Int array containing the number of days in each month */                                            
-    public static final int[] DAYS_IN_MONTH = {31,
-                                             28,
-                                             31,
-                                             30,
-                                             31,
-                                             30,
-                                             31,
-                                             31,
-                                             30,
-                                             31,
-                                             30,
-                                             31};
                                              
     /** Array containing the months for a given year */      
     private Month[] months;
@@ -84,11 +70,11 @@ public class WolfPackCalendar {
         months = new Month[MONTH_NAMES.length];
         for(int i = 0; i < months.length; i++) {
             if(i == 1 && year % LEAP_YEAR_FREQUENCY == 0) {
-                months[i] = new Month(MONTH_NAMES[i], i, DAYS_IN_MONTH[i] + 1, zellersAlgorithm(i + 1, 1, this.year));
+                months[i] = new Month(MONTH_NAMES[i], i, Day.DAYS_IN_MONTH[i] + 1, zellersAlgorithm(i + 1, 1, this.year));
                 continue;
             }
             
-            months[i] = new Month(MONTH_NAMES[i], i, DAYS_IN_MONTH[i], zellersAlgorithm(i + 1, 1, this.year));
+            months[i] = new Month(MONTH_NAMES[i], i, Day.DAYS_IN_MONTH[i], zellersAlgorithm(i + 1, 1, this.year));
         }        
     }
     
@@ -188,10 +174,16 @@ public class WolfPackCalendar {
      * argument on the command line 
      * and prints the full year
      * @param args Command line arguments, used to determine calendar year
+     *        and optional file containing important events
      */
     public static void main(String[] args) {
+        if(args.length == 0) {
+            System.out.println("Usage: java WolfPackCalendar year infile");
+            System.exit(1);
+        }
+        
         WolfPackCalendar calendar = null;
-        int year;
+        int year = 0;
         
         try {
             year = Integer.parseInt(args[0]);
@@ -202,12 +194,9 @@ public class WolfPackCalendar {
         
         try {
             if(args.length == 1) {
-                calendar = new WolfPackCalendar(Integer.parseInt(args[0]));
+                calendar = new WolfPackCalendar(year);
             } else if(args.length > 1) {
-                calendar = new WolfPackCalendar(Integer.parseInt(args[0]), args[1]);
-            } else {
-                System.out.println("Usage: java WolfPackCalendar year infile");
-                System.exit(1);
+                calendar = new WolfPackCalendar(year, args[1]);
             }
         } catch(IllegalArgumentException e) {
             System.out.println(e.getMessage());

@@ -8,9 +8,20 @@ public class Day {
     
     /** Max number of months in a year */
     public static final int MAX_MONTHS = 12;
-
-    /** Max number of days in a month */
-    public static final int MAX_DAYS = 31;
+    
+    /** Int array containing the number of days in each month */                                            
+    public static final int[] DAYS_IN_MONTH = {31,
+                                             28,
+                                             31,
+                                             30,
+                                             31,
+                                             30,
+                                             31,
+                                             31,
+                                             30,
+                                             31,
+                                             30,
+                                             31};
     
     /** Instance variable representing 
      * the numeric value of 
@@ -34,11 +45,11 @@ public class Day {
      * @param day the numeric value of the day within the month
      */
     public Day(int month, int day) {
-        if(month > MAX_MONTHS) {
+        if(month >= MAX_MONTHS) {
             throw new IllegalArgumentException("Invalid month: " + month);
         }
         
-        if(day > MAX_DAYS) {
+        if(day > DAYS_IN_MONTH[month] && month != 1) {
             throw new IllegalArgumentException("Invalid day: " + day);
         }
         

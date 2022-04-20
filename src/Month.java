@@ -37,8 +37,8 @@ public class Month {
         
         days = new Day[this.numberOfDays];
         
-        for(int i = 0; i < numberOfDays; i++) {
-            days[i] = new Day(month, i + 1);
+        for(int i = 1; i <= numberOfDays; i++) {
+            days[i - 1] = new Day(month, i);
         }
     }
     
@@ -48,6 +48,14 @@ public class Month {
      * @param note the note to be added
      */
     public void addNote(int day, String note) {
+        if(note == null) {
+            throw new IllegalArgumentException("Invalid note");
+        }
+        
+        if(day < 0 || day > days.length) {
+            throw new IllegalArgumentException("Invalid day while adding note");
+        }
+        
         days[day - 1].addNote(note);
     }
     
