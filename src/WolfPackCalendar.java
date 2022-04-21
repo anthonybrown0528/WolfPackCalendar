@@ -26,6 +26,9 @@ public class WolfPackCalendar {
     /** Number of years in a single century */
     public static final int YEARS_IN_CENTURY = 100;
     
+    /** Represents February from a range of 1 - 12 */
+    public static final int FEBRUARY = 2;
+    
     /** Represents Saturday from a range of weekdays from 0 - 6 */
     public static final int SATURDAY = 6;
     
@@ -63,17 +66,21 @@ public class WolfPackCalendar {
         }
         
         this.year = year;
+        int startDayValue = 1;
         
         months = new Month[MONTH_NAMES.length];
         for(int i = 0; i < months.length; i++) {
-            if(i == 1 && year % LEAP_YEAR_FREQUENCY != 0) {
+            int currMonthValue = i + startDayValue;
+            
+            // Check if given year is not a leap year when creating Month instance for February
+            if(currMonthValue == FEBRUARY && year % LEAP_YEAR_FREQUENCY != 0) {
                 months[i] = new Month(MONTH_NAMES[i], i, Day.DAYS_IN_MONTH[i] - 1, 
-                                      zellersAlgorithm(i + 1, 1, this.year));
+                                      zellersAlgorithm(currMonthValue, startDayValue, this.year));
                 continue;
             }
             
             months[i] = new Month(MONTH_NAMES[i], i, Day.DAYS_IN_MONTH[i], 
-                                  zellersAlgorithm(i + 1, 1, this.year));
+                                  zellersAlgorithm(currMonthValue, startDayValue, this.year));
         }        
     }
     
