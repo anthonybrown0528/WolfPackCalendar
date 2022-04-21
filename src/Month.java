@@ -33,6 +33,20 @@ public class Month {
                                       Months.OCTOBER,
                                       Months.NOVEMBER,
                                       Months.DECEMBER};
+                                      
+    /** String array containing the names of every month of the year */
+    public static final String[] MONTH_NAMES = {"January",
+                                           "February",
+                                           "March",
+                                           "April",
+                                           "May",
+                                           "June",
+                                           "July",
+                                           "August",
+                                           "September",
+                                           "October",
+                                           "November",
+                                           "December"};
     
     /** Name of the current month */
     private String name;
@@ -56,17 +70,22 @@ public class Month {
      * @param numberOfDays number of days in the month
      * @param startDayOfTheWeek day of the week the month starts on
      */
-    public Month(String name, Months month, int numberOfDays, int startDayOfTheWeek) {  
-        this.name = name;
+    public Month(Months month, int startDayOfTheWeek, boolean isLeapYear) {  
         this.month = month;
-        this.numberOfDays = numberOfDays;
+        this.numberOfDays = Day.DAYS_IN_MONTH[month.ordinal()];
         this.startDayOfTheWeek = startDayOfTheWeek;
+        
+        if(!isLeapYear) {
+            numberOfDays--;
+        }
         
         days = new Day[this.numberOfDays];
         
         for(int i = 1; i <= numberOfDays; i++) {
             days[i - 1] = new Day(month.ordinal(), i);
         }
+        
+        name = MONTH_NAMES[month.ordinal()];
     }
     
     /**

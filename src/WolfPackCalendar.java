@@ -26,20 +26,8 @@ public class WolfPackCalendar {
     /** Number of years in a single century */
     public static final int YEARS_IN_CENTURY = 100;
     
-    /** String array containing the names of every month of the year */
-    public static final String[] MONTH_NAMES = {"January",
-                                           "February",
-                                           "March",
-                                           "April",
-                                           "May",
-                                           "June",
-                                           "July",
-                                           "August",
-                                           "September",
-                                           "October",
-                                           "November",
-                                           "December"};
-    
+    /** Represents Saturday in a range 0 - 6 */
+    public static final int SATURDAY = 6;
             
     /** String array containing the names of the days of the week */                                    
     public static final String[] DAYS_OF_THE_WEEK = {"Sun",
@@ -67,9 +55,13 @@ public class WolfPackCalendar {
         
         this.year = year;
         
+        int startDayValue = 1;
         months = new Month[MONTHS_IN_YEAR];
         for(Month.Months month : Month.ALL_MONTHS) {
-            months[month.ordinal()] = new Month(MONTH_NAMES[month.ordinal()], month, Day.DAYS_IN_MONTH[month.ordinal()], zellersAlgorithm(month.ordinal() + 1, 1, year));
+            int index = month.ordinal();
+            int currMonthValue = index + 1;
+            
+            months[index] = new Month(month, zellersAlgorithm(currMonthValue, startDayValue, year), year % LEAP_YEAR_FREQUENCY == 0);
         }
     }
     
@@ -104,7 +96,7 @@ public class WolfPackCalendar {
             currDay++;
             System.out.print(currDay + "\t");
             
-            if(zellersAlgorithm(index + 1, currDay, year) == 6) {
+            if(zellersAlgorithm(index + 1, currDay, year) == SATURDAY) {
                 System.out.println();
             }
         }
