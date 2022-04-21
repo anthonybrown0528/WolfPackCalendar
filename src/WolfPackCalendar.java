@@ -26,29 +26,24 @@ public class WolfPackCalendar {
     /** Number of years in a single century */
     public static final int YEARS_IN_CENTURY = 100;
     
+    /** Represents Saturday from a range of weekdays from 0 - 6 */
+    public static final int SATURDAY = 6;
+    
     /** String array containing the names of every month of the year */
-    public static final String[] MONTH_NAMES = {"January",
-                                           "February",
-                                           "March",
-                                           "April",
-                                           "May",
-                                           "June",
-                                           "July",
-                                           "August",
-                                           "September",
-                                           "October",
-                                           "November",
-                                           "December"};
+    public static final String[] MONTH_NAMES = {"January", "February", "March", 
+                                                "April", "May", "June", 
+                                                "July", "August", "September", 
+                                                "October", "November", "December"};
     
             
-    /** String array containing the names of the days of the week */                                    
+    /** String array containing the names of the days of the week */
     public static final String[] DAYS_OF_THE_WEEK = {"Sun",
-                                                  "Mon",
-                                                  "Tues",
-                                                  "Wed",
-                                                  "Thurs",
-                                                  "Fri",
-                                                  "Sat"};
+                                                     "Mon",
+                                                     "Tues",
+                                                     "Wed",
+                                                     "Thurs",
+                                                     "Fri",
+                                                     "Sat"};
                                              
     /** Array containing the months for a given year */      
     private Month[] months;
@@ -59,6 +54,8 @@ public class WolfPackCalendar {
     /**
      * Constructs a new calendar given a numeric value for a year
      * @param year numeric value of the year, given on the command line
+     * @throws IllegalArgumentException with message "Invalid year"
+     *         if year is less than zero
      */
     public WolfPackCalendar(int year) {
         if(year < 0) {
@@ -69,15 +66,22 @@ public class WolfPackCalendar {
         
         months = new Month[MONTH_NAMES.length];
         for(int i = 0; i < months.length; i++) {
-            if(i == 1 && year % LEAP_YEAR_FREQUENCY == 0) {
-                months[i] = new Month(MONTH_NAMES[i], i, Day.DAYS_IN_MONTH[i] + 1, zellersAlgorithm(i + 1, 1, this.year));
+            if(i == 1 && year % LEAP_YEAR_FREQUENCY != 0) {
+                months[i] = new Month(MONTH_NAMES[i], i, Day.DAYS_IN_MONTH[i] - 1, 
+                                      zellersAlgorithm(i + 1, 1, this.year));
                 continue;
             }
             
-            months[i] = new Month(MONTH_NAMES[i], i, Day.DAYS_IN_MONTH[i], zellersAlgorithm(i + 1, 1, this.year));
+            months[i] = new Month(MONTH_NAMES[i], i, Day.DAYS_IN_MONTH[i], 
+                                  zellersAlgorithm(i + 1, 1, this.year));
         }        
     }
     
+    /**
+     * Constructs a new calendar given a numeric value for a year and loads important events
+     * @param year numeric value of the year, given on the command line
+     * @param notesFile path of text csv file containing important events
+     */
     public WolfPackCalendar(int year, String notesFile) {
         this(year);
         processFile(notesFile);
@@ -109,7 +113,7 @@ public class WolfPackCalendar {
             currDay++;
             System.out.print(currDay + "\t");
             
-            if(zellersAlgorithm(index + 1, currDay, year) == 6) {
+            if(zellersAlgorithm(index + 1, currDay, year) == SATURDAY) {
                 System.out.println();
             }
         }
@@ -144,6 +148,10 @@ public class WolfPackCalendar {
         return dayOfWeek;
     }
     
+    /**
+     * Reads a single line of CSV file and extracts day, month, and event note
+     * @param line single line from CSV file
+     */
     public void processLine(String line) {
         Scanner lineScanner = new Scanner(line);
         lineScanner.useDelimiter(",");
@@ -156,6 +164,11 @@ public class WolfPackCalendar {
         months[month - 1].addNote(day, note);
     }
     
+    /**
+     * Reads each line of CSV file and stores important
+     * events corresponding to given months and days
+     * @param filePath path of the CSV file
+     */
     public void processFile(String filePath) {
         Scanner fileScanner = null;
         try {
@@ -187,7 +200,7 @@ public class WolfPackCalendar {
         
         try {
             year = Integer.parseInt(args[0]);
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             System.out.println("Invalid year");
             System.exit(1);
         }
@@ -198,14 +211,14 @@ public class WolfPackCalendar {
             } else if(args.length > 1) {
                 calendar = new WolfPackCalendar(year, args[1]);
             }
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             System.exit(1);
         }
         
         try {
             calendar.printYear();
-        } catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             System.out.println(e.getMessage());
             System.exit(1);
         }

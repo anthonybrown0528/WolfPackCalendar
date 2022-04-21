@@ -9,19 +9,8 @@ public class Day {
     /** Max number of months in a year */
     public static final int MAX_MONTHS = 12;
     
-    /** Int array containing the number of days in each month */                                            
-    public static final int[] DAYS_IN_MONTH = {31,
-                                             29,
-                                             31,
-                                             30,
-                                             31,
-                                             30,
-                                             31,
-                                             31,
-                                             30,
-                                             31,
-                                             30,
-                                             31};
+    /** Int array containing the number of days in each month */
+    public static final int[] DAYS_IN_MONTH = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     
     /** Instance variable representing 
      * the numeric value of 
@@ -43,14 +32,18 @@ public class Day {
      * Constructs a new day given numeric values for month and date
      * @param month the numeric value of the month the day belongs to
      * @param day the numeric value of the day within the month
+     * @throws IllegalArgumentException with message "Invalid month" 
+     *         if month is greater than or equal to MAX_MONTHS
+     *         or with message "Invalid day" if day is greater than 
+     *         the max number of days in the corresponding month
      */
     public Day(int month, int day) {
         if(month >= MAX_MONTHS) {
-            throw new IllegalArgumentException("Invalid month: " + month);
+            throw new IllegalArgumentException("Invalid month");
         }
         
         if(day > DAYS_IN_MONTH[month]) {
-            throw new IllegalArgumentException("Invalid day: " + day);
+            throw new IllegalArgumentException("Invalid day");
         }
         
         this.month = month;
@@ -99,7 +92,7 @@ public class Day {
     public String getNote(int index) {
         try {
             return notes[index];
-        } catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             return null;
         }
     }

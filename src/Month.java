@@ -44,8 +44,11 @@ public class Month {
     
     /**
      * Adds a note to a specific day
-     * @param dayIndex determines which day to add a note to
+     * @param day determines which day to add a note to
      * @param note the note to be added
+     * @throws IllegalArgumentException with message "Invalid note" if note is null
+     *         or with message "Invalid day while adding note"
+     *         if day is less than zero or greater than the length of days
      */
     public void addNote(int day, String note) {
         if(note == null) {
@@ -59,6 +62,10 @@ public class Month {
         days[day - 1].addNote(note);
     }
     
+    /** 
+     * Prints a string containing a list of important events if there are more than 1 note or
+     * prints a single note if there is only one note. Nothing is printed if there are no notes
+     */
     public void printNotes() {
         for(int i = 0; i < numberOfDays; i++) {
             if(days[i].getNotes() != null) {
