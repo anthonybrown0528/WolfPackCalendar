@@ -37,8 +37,8 @@ public class Day {
      * @param day the numeric value of the day within the month
      */
     public Day(int month, int day) {
-        if(day > DAYS_IN_MONTH[month] && month != 1) {
-            throw new IllegalArgumentException("Invalid day: " + day);
+        if(day < 1 || (day > DAYS_IN_MONTH[month] && month != 1)) {
+            throw new IllegalArgumentException("Invalid day");
         }
         
         this.day = day;
@@ -57,7 +57,7 @@ public class Day {
      * @return notes attached to a day
      */
     public String getNotes() {
-        if(numberOfNotes < 2) {
+        if(numberOfNotes <= 1) {
             return getNote(0);
         }
         
