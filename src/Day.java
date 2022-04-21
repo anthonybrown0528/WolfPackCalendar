@@ -14,11 +14,6 @@ public class Day {
     
     /** Instance variable representing 
      * the numeric value of 
-     * the month the day belongs to */
-    private int month;
-    
-    /** Instance variable representing 
-     * the numeric value of 
      * the day within the month */
     private int day;
     
@@ -46,16 +41,7 @@ public class Day {
             throw new IllegalArgumentException("Invalid day");
         }
         
-        this.month = month;
         this.day = day;
-    }
-    
-    /**
-     * Gets the numeric value of the month the day belongs to
-     * @return numeric value of the month
-     */
-    public int getMonth() {
-        return month;
     }
     
     /**
