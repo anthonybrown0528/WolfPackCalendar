@@ -1,13 +1,16 @@
 /**
  * Contains the events and notes inputted from a CSV file
  * @author Anthony Brown
+ * @author JR Boos
+ * @author Seth Spicer
  */
 public class Day {
+    
     /** Max number of months in a year */
     public static final int MAX_MONTHS = 12;
-
-    /** Max number of days in a month */
-    public static final int MAX_DAYS = 31;
+    
+    /** Int array containing the number of days in each month */
+    public static final int[] DAYS_IN_MONTH = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     
     /** Instance variable representing 
      * the numeric value of 
@@ -22,18 +25,25 @@ public class Day {
     /** Array containing the notes for each day */
     private String[] notes;
     
+    /** Stores number of notes in a single day */
+    private int numberOfNotes;
+    
     /**
      * Constructs a new day given numeric values for month and date
      * @param month the numeric value of the month the day belongs to
      * @param day the numeric value of the day within the month
+     * @throws IllegalArgumentException with message "Invalid month" 
+     *         if month is greater than or equal to MAX_MONTHS
+     *         or with message "Invalid day" if day is greater than 
+     *         the max number of days in the corresponding month
      */
     public Day(int month, int day) {
-        if(month > MAX_MONTHS) {
+        if(month >= MAX_MONTHS || month < 1) {
             throw new IllegalArgumentException("Invalid month");
         }
         
-        if(day > MAX_DAYS) {
-            throw new IllegalArgumentException("Invalid day: " + day);
+        if(day > DAYS_IN_MONTH[month] || day < 1) {
+            throw new IllegalArgumentException("Invalid day");
         }
         
         this.month = month;
@@ -60,8 +70,18 @@ public class Day {
      * Gets all notes attached to a day
      * @return notes attached to a day
      */
-    public String[] getNotes() {
-        return notes;
+    public String getNotes() {
+        if(numberOfNotes < 2) {
+            return getNote(0);
+        }
+        
+        String notesList = "\n";
+        for(int i = 0; i < numberOfNotes; i++) {
+            notesList += String.format(" - %s\n", getNote(i));
+        }
+        
+        notesList = notesList.substring(0, notesList.length() - 1);
+        return notesList;
     }
     
     /**
@@ -70,7 +90,11 @@ public class Day {
      * @return the specified note
      */
     public String getNote(int index) {
-        return notes[index];
+        try {
+            return notes[index];
+        } catch (NullPointerException e) {
+            return null;
+        }
     }
     
     /**
@@ -78,12 +102,14 @@ public class Day {
      * @param noteString the note to be added to the day as a string
      */
     public void addNote(String noteString) {
-        String[] tmp = new String[notes.length + 1];
-        for(int i = 0; i < notes.length; i++) {
-            tmp[i] = notes[i];
+        String[] tmp = new String[numberOfNotes + 1];
+        for(int i = 0; i < numberOfNotes; i++) {
+            tmp[i] = getNote(i);
         }
         
         tmp[tmp.length - 1] = noteString;
         notes = tmp;
+        
+        numberOfNotes++;
     }
 }
