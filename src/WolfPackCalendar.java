@@ -11,6 +11,21 @@ import java.util.Scanner;
  */
 public class WolfPackCalendar {
     
+    /** String array containing the names of every month of the year */
+    public static final String[] MONTH_NAMES = {"January", "February", "March", 
+                                                "April", "May", "June", 
+                                                "July", "August", "September", 
+                                                "October", "November", "December"};
+    
+    /** String array containing the names of the days of the week */
+    public static final String[] DAYS_OF_THE_WEEK = {"Sun",
+                                                     "Mon",
+                                                     "Tues",
+                                                     "Wed",
+                                                     "Thurs",
+                                                     "Fri",
+                                                     "Sat"};
+    
     /** Number of days in a week */
     public static final int DAYS_IN_WEEK = 7;
     
@@ -31,22 +46,6 @@ public class WolfPackCalendar {
     
     /** Represents Saturday from a range of weekdays from 0 - 6 */
     public static final int SATURDAY = 6;
-    
-    /** String array containing the names of every month of the year */
-    public static final String[] MONTH_NAMES = {"January", "February", "March", 
-                                                "April", "May", "June", 
-                                                "July", "August", "September", 
-                                                "October", "November", "December"};
-    
-            
-    /** String array containing the names of the days of the week */
-    public static final String[] DAYS_OF_THE_WEEK = {"Sun",
-                                                     "Mon",
-                                                     "Tues",
-                                                     "Wed",
-                                                     "Thurs",
-                                                     "Fri",
-                                                     "Sat"};
                                              
     /** Array containing the months for a given year */      
     private Month[] months;
@@ -88,9 +87,15 @@ public class WolfPackCalendar {
      * Constructs a new calendar given a numeric value for a year and loads important events
      * @param year numeric value of the year, given on the command line
      * @param notesFile path of text csv file containing important events
+     * @throws IllegalArgumentException with message "Null path" if notesFile is equal to null
      */
-    public WolfPackCalendar(int year, String notesFile) {
+    public WolfPackCalendar(int year, String notesFile) { 
         this(year);
+        
+        if(notesFile == null) {
+            throw new IllegalArgumentException("Null path");
+        }
+        
         processFile(notesFile);
     }
     

@@ -7,9 +7,9 @@ java -cp bin WolfPackCalendar 2007 yearXX.txt
 echo "------------- End of Test 2 ------------------------"
 java -cp bin WolfPackCalendar 2007 test-files/year2007.txt
 echo "------------- End of Test 3 ------------------------"
-java -cp bin WolfPackCalendar 2022
+java -cp bin WolfPackCalendar 2022 test-files/year2022.txt
 echo "------------- End of Test 4 ------------------------"
-java -cp bin WolfPackCalendar 2007
+java -cp bin WolfPackCalendar 2007 test-files/year2008.txt
 echo "------------- End of Test 5 -----------------------"
 java -cp bin WolfPackCalendar -33
 echo "------------- End of Test 6 ------------------------"

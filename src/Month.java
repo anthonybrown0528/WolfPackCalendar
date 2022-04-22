@@ -14,7 +14,7 @@ public class Month {
     public static final int MAX_DAY_OF_THE_WEEK = 6;
     
     /** Maximum possible number of days in any single month */
-     public static final int MAX_DAYS_IN_MONTH = 31;
+    public static final int MAX_DAYS_IN_MONTH = 31;
      
     /** Number of months in a single year */
     public static final int MONTHS_IN_YEAR = Day.MAX_MONTHS;
@@ -40,10 +40,19 @@ public class Month {
      * @param month month's numeric value
      * @param numberOfDays number of days in the month
      * @param startDayOfTheWeek day of the week the month starts on
+     * @throws IllegalArgumentException with message "Invalid starting day of the week" if
+     *         startDayOfTheWeek is less than MIN_DAY_OF_THE_WEEK
+     *         or greater than MAX_DAY_OF_THE_WEEK
+               or with message "Null name" if name is null
+               or with message "Invalid number of days" if numberOfDays 
+               is less than 1 or greater than MAX_DAYS_IN_MONTH
+               or with message "Invalid month" if month is less than 1
+               or greater than MONTHS_IN_YEAR
+             
      */
     public Month(String name, int month, int numberOfDays, int startDayOfTheWeek) {  
         if(startDayOfTheWeek < MIN_DAY_OF_THE_WEEK || startDayOfTheWeek > MAX_DAY_OF_THE_WEEK) {
-            throw new IllegalArgumentException("Invalid starting day of the week, valid values are 0 - 6");
+            throw new IllegalArgumentException("Invalid starting day of the week");
         }
         
         if(name == null) {
@@ -98,7 +107,10 @@ public class Month {
     public void printNotes() {
         for(int i = 0; i < numberOfDays; i++) {
             if(days[i].getNumberOfNotes() > 0) {
-                System.out.println(String.format("%s %d: %s", name, days[i].getDay(), days[i].getNotes()));
+                System.out.println(String.format("%s %d: %s", 
+                                                 name, 
+                                                 days[i].getDay(), 
+                                                 days[i].getNotes()));
             }
         }
     }

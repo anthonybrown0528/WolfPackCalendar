@@ -79,6 +79,8 @@ public class Day {
      * Gets a specific note attached to a day
      * @param index which note should be returned
      * @return the specified note
+     * @throws IllegalArgumentException with message "Invalid index" if index
+               is less than zero or greater than the current number of notes
      */
     public String getNote(int index) {
         if(index < 0 || index >= numberOfNotes) {
@@ -99,6 +101,8 @@ public class Day {
     /**
      * Adds a note to a specified day
      * @param noteString the note to be added to the day as a string
+     * @throws IllegalArgumentException with message "Invalid note" if
+               noteString is null
      */
     public void addNote(String noteString) {
         if(noteString == null) {
