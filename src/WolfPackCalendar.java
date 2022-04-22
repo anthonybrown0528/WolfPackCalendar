@@ -15,7 +15,7 @@ public class WolfPackCalendar {
     public static final int DAYS_IN_WEEK = 7;
     
     /** Largest possible number of days in a single month */
-    public static final int MAX_DAYS_IN_MONTH = 31;
+    public static final int MAX_DAYS_IN_MONTH = Month.MAX_DAYS_IN_MONTH;
     
     /** Frequency of leap years in terms of number of years */
     public static final int LEAP_YEAR_FREQUENCY = 4;
@@ -71,17 +71,17 @@ public class WolfPackCalendar {
         months = new Month[MONTH_NAMES.length];
         for(int i = 0; i < months.length; i++) {
             int currMonthValue = i + startDayValue;
+            int startDayOfTheWeek = zellersAlgorithm(currMonthValue, startDayValue, this.year);
+            int numberOfDays = Day.DAYS_IN_MONTH[i];
             
             // Check if given year is not a leap year when creating Month instance for February
             if(currMonthValue == FEBRUARY && year % LEAP_YEAR_FREQUENCY != 0) {
-                months[i] = new Month(MONTH_NAMES[i], i, Day.DAYS_IN_MONTH[i] - 1, 
-                                      zellersAlgorithm(currMonthValue, startDayValue, this.year));
-                continue;
+                numberOfDays--;
             }
             
-            months[i] = new Month(MONTH_NAMES[i], i, Day.DAYS_IN_MONTH[i], 
-                                  zellersAlgorithm(currMonthValue, startDayValue, this.year));
-        }        
+            months[i] = new Month(MONTH_NAMES[i], currMonthValue, 
+                                  numberOfDays, startDayOfTheWeek);
+        }     
     }
     
     /**
@@ -96,12 +96,12 @@ public class WolfPackCalendar {
     
     /**
      * Prints a full month in a text format, including days of the week
-     * @param index numeric value of month to print
+     * @param month reference to a Month instance
      */
-    public void printMonth(int index) {
+    public void printMonth(Month month) {
         
         // Display month
-        System.out.println("\t\t\t" + months[index].getName() + " " + year);
+        System.out.println("\t\t\t" + month.getName() + " " + year);
         
         // Display days of the week
         for(int i = 0; i < DAYS_OF_THE_WEEK.length; i++) {
@@ -110,29 +110,31 @@ public class WolfPackCalendar {
         System.out.println();
         
         // Start month on correct day of the week
-        for(int i = 0; i < months[index].getStartDayOfTheWeek(); i++) {
+        for(int i = 0; i < month.getStartDayOfTheWeek(); i++) {
             System.out.print("\t");
         }
         
         // Display days of the month
         int currDay = 0;
-        for(int i = 0; i < months[index].getNumberOfDays(); i++) {
+        for(int i = 0; i < month.getNumberOfDays(); i++) {
             currDay++;
+            int currDayOfTheWeek = zellersAlgorithm(month.getMonth(), currDay, year);
+            
             System.out.print(currDay + "\t");
             
-            if(zellersAlgorithm(index + 1, currDay, year) == SATURDAY) {
+            if(currDayOfTheWeek == SATURDAY) {
                 System.out.println();
             }
         }
         System.out.println();
         
-        months[index].printNotes();
+        month.printNotes();
     }
     
     /** Prints the entire year by repeating the printMonth method */
     public void printYear() {
-        for(int i = 0; i < months.length; i++) {
-            printMonth(i);
+        for(Month month : months) {   
+            printMonth(month);
             System.out.println("\n");
         }
     }

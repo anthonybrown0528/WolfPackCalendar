@@ -7,6 +7,18 @@
  */
 public class Month {
     
+    /** Minimum value of startDayOfTheWeek */
+    public static final int MIN_DAY_OF_THE_WEEK = 0;
+    
+    /** Maximum value of startDayOfTheWeek */
+    public static final int MAX_DAY_OF_THE_WEEK = 6;
+    
+    /** Maximum possible number of days in any single month */
+     public static final int MAX_DAYS_IN_MONTH = 31;
+     
+    /** Number of months in a single year */
+    public static final int MONTHS_IN_YEAR = 12;
+    
     /** Name of the current month */
     private String name;
 
@@ -30,6 +42,22 @@ public class Month {
      * @param startDayOfTheWeek day of the week the month starts on
      */
     public Month(String name, int month, int numberOfDays, int startDayOfTheWeek) {  
+        if(startDayOfTheWeek < MIN_DAY_OF_THE_WEEK || startDayOfTheWeek > MAX_DAY_OF_THE_WEEK) {
+            throw new IllegalArgumentException("Invalid starting day of the week, valid values are 0 - 6");
+        }
+        
+        if(name == null) {
+            throw new IllegalArgumentException("Null name");
+        }
+        
+        if(numberOfDays < 1 || numberOfDays > MAX_DAYS_IN_MONTH) {
+            throw new IllegalArgumentException("Invalid number of days");
+        }
+        
+        if(month < 1 || month > MONTHS_IN_YEAR) {
+            throw new IllegalArgumentException("Invalid month");
+        }
+    
         this.name = name;
         this.month = month;
         this.numberOfDays = numberOfDays;
@@ -38,7 +66,8 @@ public class Month {
         days = new Day[this.numberOfDays];
         
         for(int i = 1; i <= numberOfDays; i++) {
-            days[i - 1] = new Day(month, i);
+            int dayIndex = i - 1;
+            days[dayIndex] = new Day(month, i);
         }
     }
     
@@ -68,8 +97,8 @@ public class Month {
      */
     public void printNotes() {
         for(int i = 0; i < numberOfDays; i++) {
-            if(days[i].getNotes() != null) {
-                System.out.println(String.format("%s %d: %s", name, i + 1, days[i].getNotes()));
+            if(days[i].getNumberOfNotes() > 0) {
+                System.out.println(String.format("%s %d: %s", name, days[i].getDay(), days[i].getNotes()));
             }
         }
     }
@@ -80,6 +109,14 @@ public class Month {
      */
     public String getName() {
         return name;
+    }
+    
+    /**
+     * Gets the numeric value of the month
+     * @return numeric value of the month
+     */
+    public int getMonth() {
+        return month;
     }
     
     /**

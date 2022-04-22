@@ -33,11 +33,15 @@ public class Day {
      *         the max number of days in the corresponding month
      */
     public Day(int month, int day) {
-        if(month >= MAX_MONTHS) {
+        
+        // Index of given month in DAYS_IN_MONTH
+        int monthIndex = month - 1;
+        
+        if(month < 1 || month > MAX_MONTHS) {
             throw new IllegalArgumentException("Invalid month");
         }
         
-        if(day > DAYS_IN_MONTH[month]) {
+        if(day < 1 || day > DAYS_IN_MONTH[monthIndex]) {
             throw new IllegalArgumentException("Invalid day");
         }
         
@@ -66,6 +70,7 @@ public class Day {
             notesList += String.format(" - %s\n", getNote(i));
         }
         
+        // Remove final newline character before returning
         notesList = notesList.substring(0, notesList.length() - 1);
         return notesList;
     }
@@ -76,11 +81,19 @@ public class Day {
      * @return the specified note
      */
     public String getNote(int index) {
-        try {
-            return notes[index];
-        } catch (NullPointerException e) {
-            return null;
+        if(index < 0 || index >= numberOfNotes) {
+            throw new IllegalArgumentException("Invalid index");
         }
+        
+        return notes[index];
+    }
+    
+    /** 
+     * Get the number of notes in the day
+     * @return the number of notes
+     */
+    public int getNumberOfNotes() {
+        return numberOfNotes;
     }
     
     /**
@@ -88,14 +101,24 @@ public class Day {
      * @param noteString the note to be added to the day as a string
      */
     public void addNote(String noteString) {
+        if(noteString == null) {
+            throw new IllegalArgumentException("Invalid note");
+        }
+        
         String[] tmp = new String[numberOfNotes + 1];
+        
+        // Copy all existing notes to tmp
         for(int i = 0; i < numberOfNotes; i++) {
             tmp[i] = getNote(i);
         }
         
+        // Add new note to the end of tmp
         tmp[tmp.length - 1] = noteString;
+        
+        // Replace current notes with tmp
         notes = tmp;
         
+        // Record the new number of notes
         numberOfNotes++;
     }
 }
