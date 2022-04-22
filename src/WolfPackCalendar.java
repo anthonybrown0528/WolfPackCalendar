@@ -200,7 +200,7 @@ public class WolfPackCalendar {
      */
     public static void main(String[] args) {
         if(args.length == 0) {
-            System.out.println("Usage: java WolfPackCalendar year infile");
+            System.out.println("Usage: java WolfPackCalendar year [infile]");
             System.exit(1);
         }
         

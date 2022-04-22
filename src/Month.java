@@ -17,7 +17,7 @@ public class Month {
      public static final int MAX_DAYS_IN_MONTH = 31;
      
     /** Number of months in a single year */
-    public static final int MONTHS_IN_YEAR = 12;
+    public static final int MONTHS_IN_YEAR = Day.MAX_MONTHS;
     
     /** Name of the current month */
     private String name;
